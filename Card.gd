@@ -4,12 +4,19 @@ var x = 0
 var y = 0
 var lifted = false
 var disabled = false
-
+var card_order = 0
 var card_types = ["turtles_1", "turtles_2", "turtles_3"]
 
 func _ready():
-	$front.animation = card_types[randi() % card_types.size()]
-	pass
+	randomize()
+	var card_type = randi() % card_types.size()
+	$front.animation = card_types[card_type]
+	card_order = card_type + 1
+	print (randi() % 2)
+	if (randi() % 2)==0:
+		card_order = card_order * -1
+		self.rotate(3.14)
+
 
 func drop_card_into_area(area):
 	# Ideally we can add the cards as children nodes on the slots. For now, just freeze them on the slots.
