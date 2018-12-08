@@ -16,7 +16,7 @@ position = Vector2( 370.805, 186.91 )
 "Slot",
 ] instance=ExtResource( 2 )]
 
-position = Vector2( -120.587, 179.374 )
+position = Vector2( -217.057, 177.866 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
 
@@ -24,7 +24,7 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 "Slot",
 ] instance=ExtResource( 2 )]
 
-position = Vector2( -250.219, 180.881 )
+position = Vector2( -3.01505, 180.881 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
 
@@ -32,7 +32,7 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 "Slot",
 ] instance=ExtResource( 2 )]
 
-position = Vector2( -375.327, 182.388 )
+position = Vector2( -403.967, 179.374 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
 

@@ -45,8 +45,9 @@ _sections_unfolded = [ "Z Index" ]
 
 [node name="front" type="AnimatedSprite" parent="." index="0"]
 
+position = Vector2( 1.68987, -0.396625 )
 frames = SubResource( 1 )
-animation = "scissiors"
+animation = "paper"
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
