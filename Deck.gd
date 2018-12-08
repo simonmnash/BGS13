@@ -8,6 +8,9 @@ func _ready():
 
 	pass
 
+func reprime_draw():
+	self.can_draw = true
+
 func _input_event( viewport, event, shapeidx ):
 	if (event is InputEventMouseButton && event.pressed):
 		if can_draw:
