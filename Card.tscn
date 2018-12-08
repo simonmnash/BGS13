@@ -48,7 +48,9 @@ _sections_unfolded = [ "Resource" ]
 custom_solver_bias = 0.0
 extents = Vector2( 44, 77 )
 
-[node name="Card" type="Area2D"]
+[node name="Card" type="Area2D" groups=[
+"Card",
+]]
 
 z_index = 10
 input_pickable = true

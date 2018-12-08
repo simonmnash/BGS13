@@ -22,13 +22,9 @@ func drop_card_into_area(area):
 	disabled = true
 	# There is probably a more efficent way to find the deck, but this isn't a bottleneck at the moment and probably won't ever become one.
 	get_tree().get_root().find_node("Deck", true, false).reprime_draw()
-	
-	# For now, build new layers whenever a card is placed (this will be moved into the turn handler once that is built).
-	get_tree().get_root().find_node("TurtleCity", true, false).generate_new_layer()
+
 
 func _unhandled_input(event):
-
-
 	if lifted and not disabled and event is InputEventMouseMotion:
 		position += event.relative
 
