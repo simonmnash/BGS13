@@ -15,6 +15,9 @@ func drop_card_into_area(area):
 	# Ideally we can add the cards as children nodes on the slots. For now, just freeze them on the slots.
 	var old_parent = self.get_parent()
 	var new_parent = area
+	
+	get_node("/root/Board/putdownPlayer").play(0) #play the sound!
+	
 	lifted = false
 	disabled = true
 	# There is probably a more efficent way to find the deck, but this isn't a bottleneck at the moment and probably won't ever become one.
