@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Deck.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Slot.tscn" type="PackedScene" id=2]
+
+[node name="Board" type="Node2D"]
+
+position = Vector2( 511.821, 300.007 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Deck" parent="." index="0" instance=ExtResource( 1 )]
+
+position = Vector2( 330.107, 168.822 )
+
+[node name="Slot" parent="." index="1" instance=ExtResource( 2 )]
+
+position = Vector2( -34.6689, 4.52203 )
+
+[node name="Slot2" parent="." index="2" instance=ExtResource( 2 )]
+
+position = Vector2( -208.013, -192.939 )
+
+[node name="Slot3" parent="." index="3" instance=ExtResource( 2 )]
+
+position = Vector2( -211.028, -1.50732 )
+
+[node name="Slot4" parent="." index="4" instance=ExtResource( 2 )]
+
+position = Vector2( -214.042, 200.476 )
+
+[node name="Slot5" parent="." index="5" instance=ExtResource( 2 )]
+
+position = Vector2( -396.43, -10.5514 )
+
+
