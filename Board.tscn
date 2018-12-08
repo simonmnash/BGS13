@@ -13,13 +13,13 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Deck" parent="." index="0" instance=ExtResource( 1 )]
 
-position = Vector2( 370.805, 186.91 )
+position = Vector2( 412.364, 388.921 )
 
 [node name="Slot" parent="." index="1" groups=[
 "Slot",
 ] instance=ExtResource( 2 )]
 
-position = Vector2( -217.057, 177.866 )
+position = Vector2( -264.719, 383.136 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
 
@@ -27,7 +27,7 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 "Slot",
 ] instance=ExtResource( 2 )]
 
-position = Vector2( -3.01505, 180.881 )
+position = Vector2( -108.906, 383.389 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
 
@@ -35,7 +35,7 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 "Slot",
 ] instance=ExtResource( 2 )]
 
-position = Vector2( -403.967, 179.374 )
+position = Vector2( -424.327, 389.109 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
 
@@ -59,7 +59,7 @@ bus = "Master"
 
 [node name="TurtleCity" parent="." index="6" instance=ExtResource( 5 )]
 
-position = Vector2( -10, 0 )
+position = Vector2( -10, 100 )
 rotation = 3.14159
 _sections_unfolded = [ "Cell", "Transform" ]
 
