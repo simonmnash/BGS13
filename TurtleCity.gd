@@ -27,7 +27,7 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 		# hit by decay based on the growth_decay score of the played card.
 		
 		# Even though we run bottom to top we are still looking at the row below to determine whether to decay.
-		var rows_to_decay = range(current_max_height+(growth_decay*growth_decay), current_max_height)
+		var rows_to_decay = range(current_max_height+(2*(growth_decay-1)), current_max_height)
 		# Invert returns void, so we don't set an array based on it, it just inverts rows_to_decay in place.
 		rows_to_decay.invert()
 		for j in rows_to_decay:
