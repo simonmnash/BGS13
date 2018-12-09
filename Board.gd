@@ -50,3 +50,4 @@ func _on_Timer_timeout():
 	else:
 		layers_grown = 0
 		emit_signal("stop_growth")
+		get_tree().get_root().find_node("Deck", true, false).reprime_draw()
