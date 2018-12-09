@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://Deck.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://audio/putdown.wav" type="AudioStream" id=6]
 [ext_resource path="res://audio/cell-sound.wav" type="AudioStream" id=7]
 [ext_resource path="res://audio/minusThree.wav" type="AudioStream" id=8]
+[ext_resource path="res://TurtleCity.tscn" type="PackedScene" id=9]
 
 [node name="Board" type="Node2D" index="0"]
 
@@ -82,5 +83,7 @@ pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "FXBus"
+
+[node name="TurtleCity" parent="." index="5" instance=ExtResource( 9 )]
 
 
