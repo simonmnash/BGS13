@@ -25,7 +25,7 @@
 [ext_resource path="res://assets/sky.png" type="Texture" id=23]
 [ext_resource path="res://Timer.gd" type="Script" id=24]
 [ext_resource path="res://Preserve.gd" type="Script" id=25]
-[ext_resource path="res://deck_ui/start-cycle-btn.png" type="Texture" id=26]
+[ext_resource path="res://assets/preserve-btn.png" type="Texture" id=26]
 
 [sub_resource type="RectangleShape2D" id=1]
 

@@ -59,3 +59,4 @@ func _on_ScreenshotTimer_timeout():
 	# save to a file
 	print("captured")
 	capture.save_png("preserved.png")
+	get_tree().change_scene("res://TitleScreen.tscn")
