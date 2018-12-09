@@ -93,6 +93,7 @@ script = ExtResource( 2 )
 
 [node name="Fortell" type="Area2D" parent="." index="1"]
 
+editor/display_folded = true
 position = Vector2( 315.822, 457.573 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -208,6 +209,7 @@ _sections_unfolded = [ "Transform" ]
 "Slot",
 ] instance=ExtResource( 8 )]
 
+editor/display_folded = true
 position = Vector2( -214.977, 377.05 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]

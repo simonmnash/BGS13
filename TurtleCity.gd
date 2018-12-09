@@ -27,23 +27,25 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 					# based on card parameters.
 					match order_chaos:
 						-3:
-							chance = 40
-						-2:
-							chance = 35
-						-1:
-							chance = 30
-						0:
-							chance = 20
-						1:
-							chance = 15
-						2:
 							chance = 10
+						-2:
+							chance = 25
+						-1:
+							chance = 50
+						0:
+							chance = 100
+						1:
+							chance = 100
+						2:
+							chance = 100
 						3:
-							chance = 5
+							chance = 100
 						
 					if (randi() % 100) < chance:
 						self.set_cell(i, j, 0)
 						chanceCount = 1 + chanceCount
+					else:
+						self.set_cell(i, j, -1)
 					passCount = passCount + 1
 					
 		current_max_height = current_max_height + 1
@@ -62,23 +64,25 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 					# will always decay the bottom row, since the "bottom" row is on top of an all off row. 
 					match order_chaos:
 						-3:
-							chance = 50
-						-2:
-							chance = 40
-						-1:
-							chance = 30
-						0:
-							chance = 25
-						1:
-							chance = 20
-						2:
-							chance = 15
-						3:
 							chance = 10
+						-2:
+							chance = 25
+						-1:
+							chance = 50
+						0:
+							chance = 100
+						1:
+							chance = 100
+						2:
+							chance = 100
+						3:
+							chance = 100
 						
 					if (randi() % 100) < chance:
-						self.set_cell(i, j, 0)
+						self.set_cell(i, j, -1)
 						chanceCount = 1 + chanceCount
+					else:
+						self.set_cell(i, j, 0)
 					passCount = passCount + 1
 		rows_to_decay.invert()
 		for j in rows_to_decay:
