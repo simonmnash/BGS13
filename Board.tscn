@@ -29,6 +29,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 104.563, 23.8575 )
 
+
 [sub_resource type="ParticlesMaterial" id=2]
 
 render_priority = 0
@@ -71,11 +72,13 @@ _sections_unfolded = [ "Angular Velocity", "Emission Shape", "Flags", "Gravity",
 
 [node name="Board" type="Node2D" index="0"]
 
+
 position = Vector2( 511.821, 300.007 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Fortell" type="Area2D" parent="." index="0"]
+
 
 position = Vector2( 315.822, 457.573 )
 input_pickable = true
@@ -312,9 +315,13 @@ script = ExtResource( 23 )
 
 [connection signal="stop_growth" from="." to="Timer" method="_on_Board_stop_growth"]
 
+
 [connection signal="start_growth" from="Fortell" to="." method="_on_StartCycleButton_start_growth"]
 
 [connection signal="start_growth" from="Fortell" to="Timer" method="_on_StartCycleButton_start_growth"]
+
+
+[connection signal="start_growth" from="StartCycleButton" to="." method="_on_StartCycleButton_start_growth"]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
