@@ -5,7 +5,7 @@ var y = 0
 var lifted = false
 var disabled = false
 
-var card_types = ["scissiors", "rock", "paper"]
+var card_types = ["turtles_1", "turtles_2", "turtles_3"]
 
 func _ready():
 	$front.animation = card_types[randi() % card_types.size()]
@@ -25,8 +25,6 @@ func drop_card_into_area(area):
 
 
 func _unhandled_input(event):
-
-
 	if lifted and not disabled and event is InputEventMouseMotion:
 		position += event.relative
 
