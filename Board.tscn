@@ -1,10 +1,10 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://Deck.tscn" type="PackedScene" id=2]
 [ext_resource path="res://deck_ui/deck.png" type="Texture" id=3]
-[ext_resource path="res://deck_ui/start-cycle-btn.png" type="Texture" id=4]
-[ext_resource path="res://deck_ui/draw-again-btn.png" type="Texture" id=5]
+[ext_resource path="res://StartCycleButton.gd" type="Script" id=4]
+[ext_resource path="res://deck_ui/start-cycle-btn.png" type="Texture" id=5]
 [ext_resource path="res://Slot.tscn" type="PackedScene" id=6]
 [ext_resource path="res://deck_ui/growth.png" type="Texture" id=7]
 [ext_resource path="res://deck_ui/decay.png" type="Texture" id=8]
@@ -21,6 +21,12 @@
 [ext_resource path="res://assets/the-turtle.png" type="Texture" id=19]
 [ext_resource path="res://Clouds.tscn" type="PackedScene" id=20]
 [ext_resource path="res://assets/sky.png" type="Texture" id=21]
+[ext_resource path="res://Timer.gd" type="Script" id=22]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 104.563, 23.8575 )
 
 [node name="Board" type="Node2D" index="0"]
 
@@ -39,19 +45,28 @@ scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="start cycle" type="Sprite" parent="Deck" index="3"]
+[node name="StartCycleButton" type="Area2D" parent="Deck" index="3"]
 
 position = Vector2( -265.364, -49.109 )
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 4 )
-_sections_unfolded = [ "Visibility" ]
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 4 )
+_sections_unfolded = [ "Transform" ]
 
-[node name="draw again" type="Sprite" parent="Deck" index="4"]
+[node name="start cycle" type="Sprite" parent="Deck/StartCycleButton" index="0"]
 
-position = Vector2( -264, 27 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 5 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/StartCycleButton" index="1"]
+
+shape = SubResource( 1 )
 
 [node name="GrowthDecaySlot" parent="." index="1" groups=[
 "Slot",
@@ -190,5 +205,21 @@ z_index = -348
 z_as_relative = false
 texture = ExtResource( 21 )
 _sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="Timer" type="Timer" parent="." index="8"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+script = ExtResource( 22 )
+
+[connection signal="stop_growth" from="." to="Timer" method="_on_Board_stop_growth"]
+
+[connection signal="start_growth" from="Deck/StartCycleButton" to="." method="_on_StartCycleButton_start_growth"]
+
+[connection signal="start_growth" from="Deck/StartCycleButton" to="Timer" method="_on_StartCycleButton_start_growth"]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
 
