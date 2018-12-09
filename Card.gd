@@ -12,7 +12,6 @@ func _ready():
 	var card_type = randi() % card_types.size()
 	$front.animation = card_types[card_type]
 	card_order = card_type + 1
-	print (randi() % 2)
 	if (randi() % 2)==0:
 		card_order = card_order * -1
 		self.rotate(3.14)

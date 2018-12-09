@@ -25,7 +25,11 @@ func end_day():
 	print(wonder_tradition_card.card_order)
 	print(order_chaos_card.card_order)
 	
+	growth_decay = growth_decay + growth_decay_card.card_order
+	wonder_tradition = wonder_tradition + wonder_tradition_card.card_order
+	order_chaos = order_chaos + order_chaos_card.card_order
+	
 	# Build a few new layers at the end of the day.
-	for i in range(0, 6):
-		get_tree().get_root().find_node("TurtleCity", true, false).generate_new_layer()
+	for i in range(0, 3):
+		get_tree().get_root().find_node("TurtleCity", true, false).growth(growth_decay, wonder_tradition, order_chaos)
 	
