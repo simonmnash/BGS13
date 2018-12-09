@@ -1,44 +1,44 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Card.gd" type="Script" id=1]
-[ext_resource path="res://assets/scissors.png" type="Texture" id=2]
-[ext_resource path="res://assets/turtles_2.png" type="Texture" id=3]
-[ext_resource path="res://assets/turtles_1.png" type="Texture" id=4]
-[ext_resource path="res://assets/turtles_3.png" type="Texture" id=5]
-[ext_resource path="res://assets/paper.png" type="Texture" id=6]
-[ext_resource path="res://assets/rock.png" type="Texture" id=7]
+[ext_resource path="res://assets/turtles_3.png" type="Texture" id=2]
+[ext_resource path="res://assets/scissors.png" type="Texture" id=3]
+[ext_resource path="res://assets/paper.png" type="Texture" id=4]
+[ext_resource path="res://assets/turtles_2.png" type="Texture" id=5]
+[ext_resource path="res://assets/rock.png" type="Texture" id=6]
+[ext_resource path="res://assets/turtles_1.png" type="Texture" id=7]
 
 [sub_resource type="SpriteFrames" id=1]
 
 animations = [ {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
-"name": "scissiors",
+"name": "turtles_3",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 3 ) ],
 "loop": true,
-"name": "turtles_2",
+"name": "scissiors",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 4 ) ],
 "loop": true,
-"name": "turtles_1",
+"name": "paper",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 5 ) ],
 "loop": true,
-"name": "turtles_3",
+"name": "turtles_2",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 6 ) ],
 "loop": true,
-"name": "paper",
+"name": "rock",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 7 ) ],
 "loop": true,
-"name": "rock",
+"name": "turtles_1",
 "speed": 5.0
 } ]
 _sections_unfolded = [ "Resource" ]
