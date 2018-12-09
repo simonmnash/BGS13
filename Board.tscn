@@ -358,9 +358,9 @@ shape = SubResource( 3 )
 
 [connection signal="timeout" from="ScreenshotTimer" to="." method="_on_ScreenshotTimer_timeout"]
 
-[connection signal="start_growth" from="Fortell" to="." method="_on_StartCycleButton_start_growth"]
-
 [connection signal="start_growth" from="Fortell" to="Timer" method="_on_StartCycleButton_start_growth"]
+
+[connection signal="start_growth" from="Fortell" to="." method="_on_StartCycleButton_start_growth"]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
