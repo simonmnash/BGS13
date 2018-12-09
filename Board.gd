@@ -21,13 +21,10 @@ func end_day():
 	var growth_decay_card = get_tree().get_root().find_node("GrowthDecaySlot", true, false).get_overlapping_areas()[0]
 	var wonder_tradition_card = get_tree().get_root().find_node("WonderTraditionSlot", true, false).get_overlapping_areas()[0]
 	var order_chaos_card = 	get_tree().get_root().find_node("OrderChaosSlot", true, false).get_overlapping_areas()[0]
-	print(growth_decay_card.card_order)
-	print(wonder_tradition_card.card_order)
-	print(order_chaos_card.card_order)
-	
-	growth_decay = growth_decay + growth_decay_card.card_order
-	wonder_tradition = wonder_tradition + wonder_tradition_card.card_order
-	order_chaos = order_chaos + order_chaos_card.card_order
+
+	growth_decay = growth_decay_card.card_order
+	wonder_tradition = wonder_tradition_card.card_order
+	order_chaos = order_chaos_card.card_order
 	
 	get_node("AudioHandler").masterPitch = rand_range(0.8888, 1.2222)
 	get_node("AudioHandler")._resetPitch()
