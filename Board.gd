@@ -29,6 +29,15 @@ func end_day():
 	wonder_tradition = wonder_tradition + wonder_tradition_card.card_order
 	order_chaos = order_chaos + order_chaos_card.card_order
 	
+	get_node("AudioHandler").masterPitch = rand_range(0.8888, 1.2222)
+	get_node("AudioHandler")._resetPitch()
+	
+	get_node("AudioHandler").chaos = order_chaos_card.card_order
+	get_node("AudioHandler").wonder = wonder_tradition_card.card_order
+	get_node("AudioHandler").decay = growth_decay_card.card_order
+	
+	get_node("AudioHandler")._playAmbience()
+	
 	# Build a few new layers at the end of the day.
 	for i in range(0, 3):
 		get_tree().get_root().find_node("TurtleCity", true, false).growth(growth_decay, wonder_tradition, order_chaos)
