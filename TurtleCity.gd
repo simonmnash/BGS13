@@ -2,6 +2,7 @@ extends TileMap
 
 var current_max_height = 0
 var probability = 0
+var cellCount = 0
 
 func _ready():
 	# Init an full row of cells (each cell is 4 by 4 right now as a performance hedge, we can probably get them down to 2x2 at least (probably even do single pixels)).
@@ -11,7 +12,7 @@ func _ready():
 			self.set_cell(i, 0, 0)
 	current_max_height = current_max_height + 1
 
-
+	
 func growth(growth_decay, wonder_tradition, order_chaos):
 	var chance = 0
 	var chanceCount = 0.0
@@ -91,6 +92,18 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 	else:
 		print ("No Chance happend that pass")			
 				
+					
+	cellCount = 0
+	for j in range(0, current_max_height):
+			for i in range(-35,145):
+				var thisCell = get_cell(i, j)
+				if thisCell == 0:
+					cellCount = cellCount + 1
+				else:
+					cellCount = cellCount
+	if cellCount <= 0:
+		gameOver()
+
 
 
 # This is a placeholder CA function.
@@ -340,3 +353,6 @@ func rule_6(i, j):
 	if not c02 and not c12 and not c22:
 		on = false
 	return on
+
+func gameOver():
+	get_tree().change_scene("res://EndScreen.tscn")
