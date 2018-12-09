@@ -16,5 +16,5 @@ func _input_event( viewport, event, shapeidx ):
 			# used to using get_tree.get_root.find_node for everything.
 			
 			# Hey, it's a signal now, how about that?
-
+			$FortellHighlight.hide()
 			emit_signal("start_growth")

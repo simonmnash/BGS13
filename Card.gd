@@ -27,7 +27,14 @@ func drop_card_into_area(area):
 	lifted = false
 	disabled = true
 	# There is probably a more efficent way to find the deck, but this isn't a bottleneck at the moment and probably won't ever become one.
-	get_tree().get_root().find_node("Deck", true, false).reprime_draw()
+	var cards_on_board = get_tree().get_nodes_in_group("Card")
+	print(cards_on_board)
+	if cards_on_board.size() < 3:
+		get_tree().get_root().find_node("Deck", true, false).reprime_draw()
+	elif cards_on_board.size()==3:
+		print("highlight")
+		get_tree().get_root().find_node("FortellHighlight", true, false).show()
+		
 
 
 func _unhandled_input(event):
