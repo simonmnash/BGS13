@@ -2,6 +2,7 @@ extends TileMap
 
 var current_max_height = 0
 var probability = 0
+var cellCount = 0
 
 func _ready():
 	# Init an full row of cells (each cell is 4 by 4 right now as a performance hedge, we can probably get them down to 2x2 at least (probably even do single pixels)).
@@ -11,16 +12,40 @@ func _ready():
 			self.set_cell(i, 0, 0)
 	current_max_height = current_max_height + 1
 
-
+	
 func growth(growth_decay, wonder_tradition, order_chaos):
+	var chance = 0
+	var chanceCount = 0.0
+	var passCount = 0.0
+	var chancePercentage = 0.0
+	
 	if growth_decay > 0:
 		for j in range(0, current_max_height):
 			for i in range(-35,145):
 				if should_turn_this_cell_on(i, j, current_max_height, growth_decay, wonder_tradition, order_chaos):
 					# A little randomness makes the structure a little cooler looking in my opinion. Probably change
 					# based on card parameters.
-					if (randi() % 2)==0:
+					match order_chaos:
+						-3:
+							chance = 40
+						-2:
+							chance = 35
+						-1:
+							chance = 30
+						0:
+							chance = 20
+						1:
+							chance = 15
+						2:
+							chance = 10
+						3:
+							chance = 5
+						
+					if (randi() % 100) < chance:
 						self.set_cell(i, j, 0)
+						chanceCount = 1 + chanceCount
+					passCount = passCount + 1
+					
 		current_max_height = current_max_height + 1
 	else:
 		# To make decay look (a little natural), we run it top (current max height) to bottom instead of bottom to top. We also limit the number of rows
@@ -35,16 +60,50 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 				if should_turn_this_cell_off(i, j, current_max_height, growth_decay, wonder_tradition, order_chaos):
 					# Note: We might not want this long term, it is here now because the (placeholder) decay rule
 					# will always decay the bottom row, since the "bottom" row is on top of an all off row. 
-					if (randi() % 2)==0:
-						self.set_cell(i, j, -1)
+					match order_chaos:
+						-3:
+							chance = 50
+						-2:
+							chance = 40
+						-1:
+							chance = 30
+						0:
+							chance = 25
+						1:
+							chance = 20
+						2:
+							chance = 15
+						3:
+							chance = 10
 						
+					if (randi() % 100) < chance:
+						self.set_cell(i, j, 0)
+						chanceCount = 1 + chanceCount
+					passCount = passCount + 1
 		rows_to_decay.invert()
 		for j in rows_to_decay:
 			for i in range(-35,145):
 				if kill_lone_cells(i, j):
 					self.set_cell(i, j, -1)
-					
+	
+	if passCount > 0 and chanceCount > 0:
+		chancePercentage = 100 * (chanceCount/passCount)	
+		print ("Chance happened ", chanceCount, " times out of ", passCount, " or " ,chancePercentage,"%")
+	else:
+		print ("No Chance happend that pass")			
 				
+					
+	cellCount = 0
+	for j in range(0, current_max_height):
+			for i in range(-35,145):
+				var thisCell = get_cell(i, j)
+				if thisCell == 0:
+					cellCount = cellCount + 1
+				else:
+					cellCount = cellCount
+	if cellCount <= 0:
+		gameOver()
+
 
 
 # This is a placeholder CA function.
@@ -294,3 +353,6 @@ func rule_6(i, j):
 	if not c02 and not c12 and not c22:
 		on = false
 	return on
+
+func gameOver():
+	get_tree().change_scene("res://EndScreen.tscn")
