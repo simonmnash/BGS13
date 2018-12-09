@@ -13,7 +13,6 @@ func _ready():
 
 
 func growth(growth_decay, wonder_tradition, order_chaos):
-	print(growth_decay)
 	if growth_decay > 0:
 		for j in range(0, current_max_height):
 			for i in range(-35,145):

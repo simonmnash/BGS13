@@ -10,32 +10,43 @@ var wonder_tradition = 0
 # Positive is order. Negative is chaos.
 var order_chaos = 0
 
+var layers_grown = 0
+
+
+signal stop_growth
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	pass
 
-func end_day():
-	day_count = day_count + 1;
+
+func _on_StartCycleButton_start_growth():
+	var cards_on_board = get_tree().get_nodes_in_group("Card")
 	var growth_decay_card = get_tree().get_root().find_node("GrowthDecaySlot", true, false).get_overlapping_areas()[0]
 	var wonder_tradition_card = get_tree().get_root().find_node("WonderTraditionSlot", true, false).get_overlapping_areas()[0]
 	var order_chaos_card = 	get_tree().get_root().find_node("OrderChaosSlot", true, false).get_overlapping_areas()[0]
-
+	for card in cards_on_board:
+		card.queue_free()
 	growth_decay = growth_decay_card.card_order
 	wonder_tradition = wonder_tradition_card.card_order
 	order_chaos = order_chaos_card.card_order
-	
+
+func _on_Timer_timeout():
+
 	get_node("AudioHandler").masterPitch = rand_range(0.8888, 1.2222)
 	get_node("AudioHandler")._resetPitch()
 	
-	get_node("AudioHandler").chaos = order_chaos_card.card_order
-	get_node("AudioHandler").wonder = wonder_tradition_card.card_order
-	get_node("AudioHandler").decay = growth_decay_card.card_order
+	get_node("AudioHandler").chaos = order_chaos
+	get_node("AudioHandler").wonder = wonder_tradition
+	get_node("AudioHandler").decay = growth_decay
 	
 	get_node("AudioHandler")._playAmbience()
 	
-	# Build a few new layers at the end of the day.
-	for i in range(0, 3):
+	# Build a new layers at the end of the day.
+	if layers_grown < 6:
 		get_tree().get_root().find_node("TurtleCity", true, false).growth(growth_decay, wonder_tradition, order_chaos)
-	
+		layers_grown = layers_grown + 1
+	else:
+		layers_grown = 0
+		emit_signal("stop_growth")
