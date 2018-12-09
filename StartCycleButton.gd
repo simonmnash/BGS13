@@ -16,5 +16,7 @@ func _input_event( viewport, event, shapeidx ):
 			# used to using get_tree.get_root.find_node for everything.
 			
 			# Hey, it's a signal now, how about that?
+			
+			# Wow! A signal! I'm very proud ^_^ --luke
 
 			emit_signal("start_growth")
