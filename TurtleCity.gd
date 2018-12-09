@@ -1,7 +1,7 @@
 extends TileMap
 
-
-var current_max_height = 0;
+var current_max_height = 0
+var probability = 0
 
 func _ready():
 	# Init an full row of cells (each cell is 4 by 4 right now as a performance hedge, we can probably get them down to 2x2 at least (probably even do single pixels)).
@@ -23,9 +23,10 @@ func generate_new_layer(growth_decay, wonder_tradition, order_chaos):
 func growth(grow_decay, wonder_tradition, order_chaos):
 	for j in range(0, current_max_height):
 		for i in range(-100,100):
-			if should_turn_this_cell_on(i, j, current_max_height):
+			if should_turn_this_cell_on(i, j, current_max_height, grow_decay, wonder_tradition, order_chaos):
 				self.set_cell(i, j, 0)
-
+				
+				
 	current_max_height = current_max_height + 1
 
 # Do self referential calculations on any given row.
@@ -42,7 +43,7 @@ func chaos_pass(height):
 # This is a placeholder CA function.
 # Two major things we want to change:
 # 1) Right now rules are static (000->0, 011->0, 111->0). Ideally we want to replace this with dyanm
-func should_turn_this_cell_on(i, j, max_height):
+func should_turn_this_cell_on(i, j, max_height, grow_decay, wonder_tradition, order_chaos):
 	# This is a little unconventional, CA convention is to use 0 as off and 1 as on, but godot uses -1 as off for a tilemap,
 	# so 0 is the first kind of tile in the tilemap.
 	

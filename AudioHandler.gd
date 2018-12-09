@@ -1,15 +1,17 @@
 extends Node
 
-var chaos = -3
-var wonder = 0
-var decay = -3
+var chaos = 1
+var wonder = -2
+var decay = 3
 
 var nextPlay = 20
 var randomness = 0
 var counter = 0
 
-var fifths = [0.66666, 1, 1.5, 1.125, 1.6875]
-var fourths = [0.75, 1, 1.3333, 1.7777, 1.18518]
+var masterPitch = 1
+
+var fifths = [masterPitch * 0.66666, masterPitch, masterPitch * 1.5, masterPitch * 1.125, masterPitch * 1.6875]
+var fourths = [masterPitch * 0.75, masterPitch, masterPitch * 1.3333, masterPitch * 1.7777, masterPitch * 1.18518]
 #1.265625, 1.8984375
 var randPitchSelection
 var newPitch = 0
@@ -17,7 +19,15 @@ var volumeWonder = -14
 
 var growthCycle = true
 
-var ambientSounds = [load("res://audio/minusThree"), load("res://audio/minusTwo"), load("res://audio/minusOne"), load("res://audio/neutral"), load("res://audio/plusOne"), load("res://audio/plusTwo"), load("res://audio/plusThree")]
+var minusThree = load("res://audio/minusThree.wav")
+var minusTwo = load("res://audio/minusTwo.wav")
+var minusOne = load("res://audio/minusOne.wav")
+var neutral = load("res://audio/neutral.wav")
+var plusOne = load("res://audio/plusOne.wav")
+var plusTwo = load("res://audio/plusTwo.wav")
+var plusThree = load("res://audio/plusThree.wav")
+
+var ambientSounds = [minusThree, minusTwo, minusOne, neutral, plusOne, plusTwo, plusThree]
 var ambientSelector = 0
 
 # class member variables go here, for example:
@@ -32,10 +42,6 @@ func _ready():
 
 func _process(delta):
 	if (growthCycle):
-		
-		if (!get_node("ambience").playing):
-			print("not playing")
-			_playAmbience()
 		_orderChaos() # increases or decreases randomness of note spacing and adds lo-fi distortion
 		_traditionWonder() # manipulates audio effects
 		counter = counter + 1
@@ -105,9 +111,15 @@ func _playNextMelodyNote():
 	_growthDecay() # decides which note array to choose from — growth moves in augmentation (5ths), decay moves in diminuition (4ths)
 	get_node("cellSonification").play(0)
 	counter = 0
+	
+func _resetPitch():
+	fifths = [masterPitch * 0.66666, masterPitch, masterPitch * 1.5, masterPitch * 1.125, masterPitch * 1.6875]
+	fourths = [masterPitch * 0.75, masterPitch, masterPitch * 1.3333, masterPitch * 1.7777, masterPitch * 1.18518]
+	get_node("ambience").set_pitch_scale(masterPitch)
 
 func _playAmbience():
+	
 	ambientSelector = decay + 3
-	get_node("ambience").set_stream(ambientSounds[ambientSelector])
+	get_node("ambience").stream = ambientSounds[ambientSelector]
 	get_node("ambience").play(0)
 	
