@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://Deck.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Slot.tscn" type="PackedScene" id=3]
 [ext_resource path="res://audio/pickup.wav" type="AudioStream" id=4]
 [ext_resource path="res://audio/putdown.wav" type="AudioStream" id=5]
-[ext_resource path="res://TurtleCity.tscn" type="PackedScene" id=6]
 
 [node name="Board" type="Node2D" index="0"]
 
@@ -58,11 +57,5 @@ pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Master"
-
-[node name="TurtleCity" parent="." index="6" instance=ExtResource( 6 )]
-
-position = Vector2( -10, 100 )
-rotation = 3.14159
-_sections_unfolded = [ "Cell", "Transform" ]
 
 
