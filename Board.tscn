@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://Deck.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Slot.tscn" type="PackedScene" id=3]
-[ext_resource path="res://audio/pickup.wav" type="AudioStream" id=4]
-[ext_resource path="res://audio/putdown.wav" type="AudioStream" id=5]
+[ext_resource path="res://AudioHandler.gd" type="Script" id=4]
+[ext_resource path="res://audio/pickup.wav" type="AudioStream" id=5]
+[ext_resource path="res://audio/putdown.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/cell-sound.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/minusThree.wav" type="AudioStream" id=8]
 
 [node name="Board" type="Node2D" index="0"]
 
@@ -40,16 +43,11 @@ position = Vector2( -108.906, 383.389 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="pickupPlayer" type="AudioStreamPlayer" parent="." index="4"]
+[node name="AudioHandler" type="Node" parent="." index="4"]
 
-stream = ExtResource( 4 )
-volume_db = 0.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
-bus = "Master"
+script = ExtResource( 4 )
 
-[node name="putdownPlayer" type="AudioStreamPlayer" parent="." index="5"]
+[node name="pickupPlayer" type="AudioStreamPlayer" parent="AudioHandler" index="0"]
 
 stream = ExtResource( 5 )
 volume_db = 0.0
@@ -57,5 +55,32 @@ pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Master"
+
+[node name="putdownPlayer" type="AudioStreamPlayer" parent="AudioHandler" index="1"]
+
+stream = ExtResource( 6 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="cellSonification" type="AudioStreamPlayer" parent="AudioHandler" index="2"]
+
+stream = ExtResource( 7 )
+volume_db = -13.96
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "CellPitchBus"
+
+[node name="ambience" type="AudioStreamPlayer" parent="AudioHandler" index="3"]
+
+stream = ExtResource( 8 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "FXBus"
 
 
