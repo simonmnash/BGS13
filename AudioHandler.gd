@@ -4,7 +4,7 @@ var chaos = 1
 var wonder = -2
 var decay = 3
 
-var nextPlay = 20
+var nextPlay = 30
 var randomness = 0
 var counter = 0
 
@@ -62,12 +62,27 @@ func _orderChaos():
 	
 
 func _traditionWonder():
-	var normalizedWonder = (wonder + 3.00) / 6.00
+	var normalizedWonder = 1-((wonder + 3.00) / 6.00)
 	#CHORUS (bus 1 effect 0)
 	AudioServer.get_bus_effect(1,0).set_wet(normalizedWonder * 0.5)
 	#REVERB (bus 1 effect 3)
 	AudioServer.get_bus_effect(1,3).set_room_size(normalizedWonder)
 	AudioServer.get_bus_effect(1,3).set_damping(1-normalizedWonder)
+	
+	if wonder == 3:
+		nextPlay = 20
+	elif wonder == 2:
+		nextPlay = 25
+	elif wonder == 1:
+		nextPlay = 30
+	elif wonder == -1:
+		nextPlay = 35
+	elif wonder == -2:
+		nextPlay = 40
+	elif wonder == -3:
+		nextPlay = 50
+	else:
+		nextPlay = 30
 	
 	
 	

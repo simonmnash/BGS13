@@ -1,23 +1,26 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://Deck.tscn" type="PackedScene" id=2]
 [ext_resource path="res://deck_ui/deck.png" type="Texture" id=3]
-[ext_resource path="res://Slot.tscn" type="PackedScene" id=4]
-[ext_resource path="res://deck_ui/growth.png" type="Texture" id=5]
-[ext_resource path="res://deck_ui/decay.png" type="Texture" id=6]
-[ext_resource path="res://deck_ui/wonder.png" type="Texture" id=7]
-[ext_resource path="res://deck_ui/tradition.png" type="Texture" id=8]
-[ext_resource path="res://deck_ui/order.png" type="Texture" id=9]
-[ext_resource path="res://deck_ui/chaos.png" type="Texture" id=10]
-[ext_resource path="res://AudioHandler.gd" type="Script" id=11]
-[ext_resource path="res://audio/pickup.wav" type="AudioStream" id=12]
-[ext_resource path="res://audio/putdown.wav" type="AudioStream" id=13]
-[ext_resource path="res://audio/cell-sound.wav" type="AudioStream" id=14]
-[ext_resource path="res://audio/minusThree.wav" type="AudioStream" id=15]
-[ext_resource path="res://TurtleCity.tscn" type="PackedScene" id=16]
-[ext_resource path="res://assets/the-turtle.png" type="Texture" id=17]
-[ext_resource path="res://Clouds.tscn" type="PackedScene" id=18]
+[ext_resource path="res://deck_ui/start-cycle-btn.png" type="Texture" id=4]
+[ext_resource path="res://deck_ui/draw-again-btn.png" type="Texture" id=5]
+[ext_resource path="res://Slot.tscn" type="PackedScene" id=6]
+[ext_resource path="res://deck_ui/growth.png" type="Texture" id=7]
+[ext_resource path="res://deck_ui/decay.png" type="Texture" id=8]
+[ext_resource path="res://deck_ui/wonder.png" type="Texture" id=9]
+[ext_resource path="res://deck_ui/tradition.png" type="Texture" id=10]
+[ext_resource path="res://deck_ui/order.png" type="Texture" id=11]
+[ext_resource path="res://deck_ui/chaos.png" type="Texture" id=12]
+[ext_resource path="res://AudioHandler.gd" type="Script" id=13]
+[ext_resource path="res://audio/pickup.wav" type="AudioStream" id=14]
+[ext_resource path="res://audio/putdown.wav" type="AudioStream" id=15]
+[ext_resource path="res://audio/cell-sound.wav" type="AudioStream" id=16]
+[ext_resource path="res://audio/minusThree.wav" type="AudioStream" id=17]
+[ext_resource path="res://TurtleCity.tscn" type="PackedScene" id=18]
+[ext_resource path="res://assets/the-turtle.png" type="Texture" id=19]
+[ext_resource path="res://Clouds.tscn" type="PackedScene" id=20]
+[ext_resource path="res://assets/sky.png" type="Texture" id=21]
 
 [node name="Board" type="Node2D" index="0"]
 
@@ -36,9 +39,23 @@ scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 
+[node name="start cycle" type="Sprite" parent="Deck" index="3"]
+
+position = Vector2( -265.364, -49.109 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="draw again" type="Sprite" parent="Deck" index="4"]
+
+position = Vector2( -264, 27 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+_sections_unfolded = [ "Transform" ]
+
 [node name="GrowthDecaySlot" parent="." index="1" groups=[
 "Slot",
-] instance=ExtResource( 4 )]
+] instance=ExtResource( 6 )]
 
 editor/display_folded = true
 position = Vector2( -424.327, 389.109 )
@@ -49,19 +66,19 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 
 position = Vector2( 0, 93 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="decay" type="Sprite" parent="GrowthDecaySlot" index="3"]
 
 position = Vector2( 0, -98 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="WonderTraditionSlot" parent="." index="2" groups=[
 "Slot",
-] instance=ExtResource( 4 )]
+] instance=ExtResource( 6 )]
 
 editor/display_folded = true
 position = Vector2( -264.719, 389.109 )
@@ -72,20 +89,21 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 
 position = Vector2( 2, -98 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 7 )
+texture = ExtResource( 9 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="tradition" type="Sprite" parent="WonderTraditionSlot" index="3"]
 
 position = Vector2( 0, 92 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 8 )
+texture = ExtResource( 10 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="OrderChaosSlot" parent="." index="3" groups=[
 "Slot",
-] instance=ExtResource( 4 )]
+] instance=ExtResource( 6 )]
 
+editor/display_folded = true
 position = Vector2( -108.906, 389.109 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
@@ -94,23 +112,24 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 
 position = Vector2( 0, 95 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 9 )
+texture = ExtResource( 11 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="chaos" type="Sprite" parent="OrderChaosSlot" index="3"]
 
 position = Vector2( 0, -97 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 10 )
+texture = ExtResource( 12 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="AudioHandler" type="Node" parent="." index="4"]
 
-script = ExtResource( 11 )
+editor/display_folded = true
+script = ExtResource( 13 )
 
 [node name="pickupPlayer" type="AudioStreamPlayer" parent="AudioHandler" index="0"]
 
-stream = ExtResource( 12 )
+stream = ExtResource( 14 )
 volume_db = -17.27
 pitch_scale = 1.0
 autoplay = false
@@ -119,7 +138,7 @@ bus = "Master"
 
 [node name="putdownPlayer" type="AudioStreamPlayer" parent="AudioHandler" index="1"]
 
-stream = ExtResource( 13 )
+stream = ExtResource( 15 )
 volume_db = -15.62
 pitch_scale = 1.0
 autoplay = false
@@ -128,7 +147,7 @@ bus = "Master"
 
 [node name="cellSonification" type="AudioStreamPlayer" parent="AudioHandler" index="2"]
 
-stream = ExtResource( 14 )
+stream = ExtResource( 16 )
 volume_db = -13.96
 pitch_scale = 1.0
 autoplay = false
@@ -137,7 +156,7 @@ bus = "CellPitchBus"
 
 [node name="ambience" type="AudioStreamPlayer" parent="AudioHandler" index="3"]
 
-stream = ExtResource( 15 )
+stream = ExtResource( 17 )
 volume_db = -10.66
 pitch_scale = 1.0
 autoplay = false
@@ -145,8 +164,9 @@ mix_target = 0
 bus = "AmbienceBus"
 _sections_unfolded = [ "Cell", "Transform" ]
 
-[node name="TurtleCity" parent="." index="5" instance=ExtResource( 16 )]
+[node name="TurtleCity" parent="." index="5" instance=ExtResource( 18 )]
 
+editor/display_folded = true
 position = Vector2( 250, 250 )
 rotation = 3.14159
 _sections_unfolded = [ "Cell", "Transform" ]
@@ -157,9 +177,18 @@ position = Vector2( 18.0003, -134 )
 rotation = 3.14159
 scale = Vector2( 3.1, 3.1 )
 z_index = -100
-texture = ExtResource( 17 )
+texture = ExtResource( 19 )
 _sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="Node" parent="." index="6" instance=ExtResource( 18 )]
+[node name="Clouds" parent="." index="6" instance=ExtResource( 20 )]
+
+[node name="SkyBG" type="Sprite" parent="." index="7"]
+
+position = Vector2( 9.00003, 53 )
+scale = Vector2( 2, 1.2 )
+z_index = -348
+z_as_relative = false
+texture = ExtResource( 21 )
+_sections_unfolded = [ "Transform", "Z Index" ]
 
 
