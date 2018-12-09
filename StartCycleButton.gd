@@ -3,8 +3,6 @@ extends Area2D
 signal start_growth
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
 	pass
 
 

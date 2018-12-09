@@ -1,28 +1,31 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
-[ext_resource path="res://StartCycleButton.gd" type="Script" id=2]
-[ext_resource path="res://assets/foretell.png" type="Texture" id=3]
-[ext_resource path="res://assets/sparkle.png" type="Texture" id=4]
-[ext_resource path="res://Deck.tscn" type="PackedScene" id=5]
-[ext_resource path="res://deck_ui/deck.png" type="Texture" id=6]
-[ext_resource path="res://Slot.tscn" type="PackedScene" id=7]
-[ext_resource path="res://deck_ui/growth.png" type="Texture" id=8]
-[ext_resource path="res://deck_ui/decay.png" type="Texture" id=9]
-[ext_resource path="res://deck_ui/wonder.png" type="Texture" id=10]
-[ext_resource path="res://deck_ui/tradition.png" type="Texture" id=11]
-[ext_resource path="res://deck_ui/order.png" type="Texture" id=12]
-[ext_resource path="res://deck_ui/chaos.png" type="Texture" id=13]
-[ext_resource path="res://AudioHandler.gd" type="Script" id=14]
-[ext_resource path="res://audio/pickup.wav" type="AudioStream" id=15]
-[ext_resource path="res://audio/putdown.wav" type="AudioStream" id=16]
-[ext_resource path="res://audio/cell-sound.wav" type="AudioStream" id=17]
-[ext_resource path="res://audio/minusThree.wav" type="AudioStream" id=18]
-[ext_resource path="res://assets/the-turtle.png" type="Texture" id=19]
-[ext_resource path="res://TurtleCity.tscn" type="PackedScene" id=20]
-[ext_resource path="res://Clouds.tscn" type="PackedScene" id=21]
-[ext_resource path="res://assets/sky.png" type="Texture" id=22]
-[ext_resource path="res://Timer.gd" type="Script" id=23]
+[ext_resource path="res://ScreenshotTimer.gd" type="Script" id=2]
+[ext_resource path="res://StartCycleButton.gd" type="Script" id=3]
+[ext_resource path="res://assets/foretell.png" type="Texture" id=4]
+[ext_resource path="res://assets/sparkle.png" type="Texture" id=5]
+[ext_resource path="res://Deck.tscn" type="PackedScene" id=6]
+[ext_resource path="res://deck_ui/deck.png" type="Texture" id=7]
+[ext_resource path="res://Slot.tscn" type="PackedScene" id=8]
+[ext_resource path="res://deck_ui/growth.png" type="Texture" id=9]
+[ext_resource path="res://deck_ui/decay.png" type="Texture" id=10]
+[ext_resource path="res://deck_ui/wonder.png" type="Texture" id=11]
+[ext_resource path="res://deck_ui/tradition.png" type="Texture" id=12]
+[ext_resource path="res://deck_ui/order.png" type="Texture" id=13]
+[ext_resource path="res://deck_ui/chaos.png" type="Texture" id=14]
+[ext_resource path="res://AudioHandler.gd" type="Script" id=15]
+[ext_resource path="res://audio/pickup.wav" type="AudioStream" id=16]
+[ext_resource path="res://audio/putdown.wav" type="AudioStream" id=17]
+[ext_resource path="res://audio/cell-sound.wav" type="AudioStream" id=18]
+[ext_resource path="res://audio/minusThree.wav" type="AudioStream" id=19]
+[ext_resource path="res://assets/the-turtle.png" type="Texture" id=20]
+[ext_resource path="res://TurtleCity.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Clouds.tscn" type="PackedScene" id=22]
+[ext_resource path="res://assets/sky.png" type="Texture" id=23]
+[ext_resource path="res://Timer.gd" type="Script" id=24]
+[ext_resource path="res://Preserve.gd" type="Script" id=25]
+[ext_resource path="res://deck_ui/start-cycle-btn.png" type="Texture" id=26]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -69,13 +72,26 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Angular Velocity", "Emission Shape", "Flags", "Gravity", "Initial Velocity", "Spread" ]
 
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 10 )
+
 [node name="Board" type="Node2D" index="0"]
 
 position = Vector2( 511.821, 300.007 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Fortell" type="Area2D" parent="." index="0"]
+[node name="ScreenshotTimer" type="Timer" parent="." index="0"]
+
+process_mode = 1
+wait_time = 4.0
+one_shot = true
+autostart = false
+script = ExtResource( 2 )
+
+[node name="Fortell" type="Area2D" parent="." index="1"]
 
 position = Vector2( 315.822, 457.573 )
 input_pickable = true
@@ -85,13 +101,13 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="start cycle" type="Sprite" parent="Fortell" index="0"]
 
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fortell" index="1"]
@@ -101,7 +117,6 @@ shape = SubResource( 1 )
 
 [node name="FortellHighlight" type="Node2D" parent="Fortell" index="2"]
 
-visible = false
 position = Vector2( 80.1918, 3.01465 )
 scale = Vector2( 1.15077, 1 )
 
@@ -122,7 +137,7 @@ visibility_rect = Rect2( -100, -100, 200, 200 )
 local_coords = true
 draw_order = 0
 process_material = SubResource( 2 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 normal_map = null
 h_frames = 1
 v_frames = 1
@@ -146,14 +161,15 @@ visibility_rect = Rect2( -100, -100, 200, 200 )
 local_coords = true
 draw_order = 0
 process_material = SubResource( 2 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 normal_map = null
 h_frames = 1
 v_frames = 1
 _sections_unfolded = [ "Process Material", "Textures", "Time", "Transform" ]
 
-[node name="Deck" parent="." index="1" instance=ExtResource( 5 )]
+[node name="Deck" parent="." index="2" instance=ExtResource( 6 )]
 
+editor/display_folded = true
 position = Vector2( 266.152, 339.366 )
 
 [node name="deck" type="Sprite" parent="Deck" index="3"]
@@ -161,12 +177,12 @@ position = Vector2( 266.152, 339.366 )
 position = Vector2( 109.557, -0.691895 )
 rotation = 1.5708
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="GrowthDecaySlot" parent="." index="2" groups=[
+[node name="GrowthDecaySlot" parent="." index="3" groups=[
 "Slot",
-] instance=ExtResource( 7 )]
+] instance=ExtResource( 8 )]
 
 editor/display_folded = true
 position = Vector2( -377.599, 375.543 )
@@ -177,21 +193,20 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 
 position = Vector2( 0, 93 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="decay" type="Sprite" parent="GrowthDecaySlot" index="3"]
 
 position = Vector2( 0, -98 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 9 )
+texture = ExtResource( 10 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="WonderTraditionSlot" parent="." index="3" groups=[
+[node name="WonderTraditionSlot" parent="." index="4" groups=[
 "Slot",
-] instance=ExtResource( 7 )]
+] instance=ExtResource( 8 )]
 
-editor/display_folded = true
 position = Vector2( -214.977, 377.05 )
 z_index = -10
 _sections_unfolded = [ "Transform", "Z Index" ]
@@ -200,19 +215,19 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 
 position = Vector2( 2, -98 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 10 )
+texture = ExtResource( 11 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="tradition" type="Sprite" parent="WonderTraditionSlot" index="3"]
 
 position = Vector2( 0, 92 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
+texture = ExtResource( 12 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="OrderChaosSlot" parent="." index="4" groups=[
+[node name="OrderChaosSlot" parent="." index="5" groups=[
 "Slot",
-] instance=ExtResource( 7 )]
+] instance=ExtResource( 8 )]
 
 editor/display_folded = true
 position = Vector2( -47.1049, 377.05 )
@@ -223,24 +238,24 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 
 position = Vector2( 0, 95 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 12 )
+texture = ExtResource( 13 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="chaos" type="Sprite" parent="OrderChaosSlot" index="3"]
 
 position = Vector2( 0, -97 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 13 )
+texture = ExtResource( 14 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="AudioHandler" type="Node" parent="." index="5"]
+[node name="AudioHandler" type="Node" parent="." index="6"]
 
 editor/display_folded = true
-script = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="pickupPlayer" type="AudioStreamPlayer" parent="AudioHandler" index="0"]
 
-stream = ExtResource( 15 )
+stream = ExtResource( 16 )
 volume_db = -17.27
 pitch_scale = 1.0
 autoplay = false
@@ -249,7 +264,7 @@ bus = "Master"
 
 [node name="putdownPlayer" type="AudioStreamPlayer" parent="AudioHandler" index="1"]
 
-stream = ExtResource( 16 )
+stream = ExtResource( 17 )
 volume_db = -15.62
 pitch_scale = 1.0
 autoplay = false
@@ -258,7 +273,7 @@ bus = "Master"
 
 [node name="cellSonification" type="AudioStreamPlayer" parent="AudioHandler" index="2"]
 
-stream = ExtResource( 17 )
+stream = ExtResource( 18 )
 volume_db = -13.96
 pitch_scale = 1.0
 autoplay = false
@@ -267,7 +282,7 @@ bus = "CellPitchBus"
 
 [node name="ambience" type="AudioStreamPlayer" parent="AudioHandler" index="3"]
 
-stream = ExtResource( 18 )
+stream = ExtResource( 19 )
 volume_db = -10.66
 pitch_scale = 1.0
 autoplay = false
@@ -275,47 +290,79 @@ mix_target = 0
 bus = "AmbienceBus"
 _sections_unfolded = [ "Cell", "Transform" ]
 
-[node name="the-turtle" type="Sprite" parent="." index="6"]
+[node name="the-turtle" type="Sprite" parent="." index="7"]
 
 position = Vector2( 200, 359.001 )
 rotation = -5.07036e-06
 scale = Vector2( 3.1, 3.1 )
 z_index = -100
-texture = ExtResource( 19 )
+texture = ExtResource( 20 )
 _sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="TurtleCity" parent="." index="7" instance=ExtResource( 20 )]
+[node name="TurtleCity" parent="." index="8" instance=ExtResource( 21 )]
 
 position = Vector2( 200, 225 )
 rotation = 3.14159
 tile_data = PoolIntArray( -4915251, 1, 0, -2031666, 1, 0, 786451, 1, 0, 983006, 1, 0 )
 _sections_unfolded = [ "Cell", "Transform" ]
 
-[node name="Clouds" parent="." index="8" instance=ExtResource( 21 )]
+[node name="Clouds" parent="." index="9" instance=ExtResource( 22 )]
 
-[node name="SkyBG" type="Sprite" parent="." index="9"]
+[node name="SkyBG" type="Sprite" parent="." index="10"]
 
 position = Vector2( 9.00003, 53 )
 scale = Vector2( 2, 1.2 )
 z_index = -348
 z_as_relative = false
-texture = ExtResource( 22 )
+texture = ExtResource( 23 )
 _sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="Timer" type="Timer" parent="." index="10"]
+[node name="Timer" type="Timer" parent="." index="11"]
 
 process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
-script = ExtResource( 23 )
+script = ExtResource( 24 )
+
+[node name="Preserve" type="Area2D" parent="." index="12"]
+
+position = Vector2( 153.791, 352.695 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 25 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Preserve" index="0"]
+
+rotation = 4.71239
+scale = Vector2( 0.409727, 0.509332 )
+texture = ExtResource( 26 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Preserve" index="1"]
+
+position = Vector2( -1.49758, -2.05198 )
+scale = Vector2( 2.68149, 8.75427 )
+shape = SubResource( 3 )
 
 [connection signal="stop_growth" from="." to="Timer" method="_on_Board_stop_growth"]
+
+[connection signal="timeout" from="ScreenshotTimer" to="." method="_on_ScreenshotTimer_timeout"]
 
 [connection signal="start_growth" from="Fortell" to="." method="_on_StartCycleButton_start_growth"]
 
 [connection signal="start_growth" from="Fortell" to="Timer" method="_on_StartCycleButton_start_growth"]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[connection signal="victory" from="Preserve" to="ScreenshotTimer" method="_on_Preserve_victory"]
 
 

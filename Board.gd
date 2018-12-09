@@ -51,3 +51,11 @@ func _on_Timer_timeout():
 		layers_grown = 0
 		emit_signal("stop_growth")
 		get_tree().get_root().find_node("Deck", true, false).reprime_draw()
+		
+
+func _on_ScreenshotTimer_timeout():
+	# get screen capture
+	var capture = get_viewport().get_texture().get_data()
+	# save to a file
+	print("captured")
+	capture.save_png("preserved.png")
