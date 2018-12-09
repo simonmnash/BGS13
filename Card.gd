@@ -22,7 +22,7 @@ func drop_card_into_area(area):
 	var old_parent = self.get_parent()
 	var new_parent = area
 	
-	get_node("/root/Board/putdownPlayer").play(0) #play the sound!
+	get_node("/root/Board/AudioHandler/putdownPlayer").play(0) #play the sound!
 	
 	lifted = false
 	disabled = true

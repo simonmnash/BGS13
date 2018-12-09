@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/cell-sound.wav-429363d1e024b24938def828a565269e.sample"
+
+[deps]
+
+source_file="res://audio/cell-sound.wav"
+dest_files=[ "res://.import/cell-sound.wav-429363d1e024b24938def828a565269e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0

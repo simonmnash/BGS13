@@ -29,5 +29,6 @@ func _input_event( viewport, event, shapeidx ):
 			else:
 				var card_instance = card.instance()
 				add_child(card_instance)
-				get_node("/root/Board/pickupPlayer").play(0) #play the sound!
+				get_node("/root/Board/AudioHandler/pickupPlayer").play(0) #play the sound!
 				can_draw = false
+
