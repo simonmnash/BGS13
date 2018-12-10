@@ -12,6 +12,8 @@ var order_chaos = 0
 
 var layers_grown = 0
 
+var layers_to_grow = 6
+
 
 signal stop_growth
 
@@ -31,6 +33,15 @@ func _on_StartCycleButton_start_growth():
 	growth_decay = growth_decay_card.card_order
 	wonder_tradition = wonder_tradition_card.card_order
 	order_chaos = order_chaos_card.card_order
+	
+	if growth_decay == 3:
+		layers_to_grow = 12
+	elif growth_decay == 2:
+		layers_to_grow = 9
+	elif growth_decay == 1:
+		layers_to_grow = 6
+	else:
+		layers_to_grow = 6
 
 func _on_Timer_timeout():
 
@@ -44,7 +55,7 @@ func _on_Timer_timeout():
 	get_node("AudioHandler")._playAmbience()
 	
 	# Build a new layers at the end of the day.
-	if layers_grown < 6:
+	if layers_grown < layers_to_grow:
 		get_tree().get_root().find_node("TurtleCity", true, false).growth(growth_decay, wonder_tradition, order_chaos)
 		layers_grown = layers_grown + 1
 	else:

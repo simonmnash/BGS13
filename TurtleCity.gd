@@ -1,6 +1,8 @@
 extends TileMap
 
 var current_max_height = 0
+var current_actual_height = 0
+var population_of_top_row = 0.0
 var probability = 0
 var cellCount = 0
 
@@ -10,22 +12,22 @@ func _ready():
 
 		if (randi() % 2)==0:
 			self.set_cell(i, 0, 0)
-	current_max_height = current_max_height + 1
+			
+	current_actual_height = current_actual_height + 1
 
 	
 func growth(growth_decay, wonder_tradition, order_chaos):
+	population_of_top_row = 0
 	var chance = 0
 	var chanceCount = 0.0
 	var passCount = 0.0
 	var chancePercentage = 0.0
 	
 	if growth_decay > 0:
-		for j in range(0, current_max_height):
+		for j in range(floor(current_actual_height/2), current_actual_height+1): #growth can only propagate from halfway up your structure. This solves the problem of whole-structure-filling, and makes more interesting results
 			for i in range(-35,145):
-				if should_turn_this_cell_on(i, j, current_max_height, growth_decay, wonder_tradition, order_chaos):
-					# A little randomness makes the structure a little cooler looking in my opinion. Probably change
-					# based on card parameters.
-					match order_chaos:
+				
+				match order_chaos:
 						-3:
 							chance = 10
 						-2:
@@ -40,29 +42,54 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 							chance = 100
 						3:
 							chance = 100
-						
-					if (randi() % 100) < chance:
-						self.set_cell(i, j, 0)
-						chanceCount = 1 + chanceCount
-					else:
-						self.set_cell(i, j, -1)
-					passCount = passCount + 1
+				
+				# I made the chaos variable influence which wonder_tradition rule is picked for each cell.
+				# this way, "ORDER" makes growth & decay predictably follow their rules, while "CHAOS" makes them behave more strangely
+							
+				var new_wonder_tradition = wonder_tradition 
+				if (randi() % 100) < chance:
+					new_wonder_tradition = wonder_tradition
+					chanceCount = 1 + chanceCount
+				else:
+					new_wonder_tradition = round(rand_range(-3, 3))
+				passCount = passCount + 1
+				
+				if should_turn_this_cell_on(i, j, current_actual_height, growth_decay, new_wonder_tradition, order_chaos):
+
+					self.set_cell(i, j, 0)
+					# Keep track of how many cells are in the top row
+					if j == current_actual_height:
+						population_of_top_row = population_of_top_row + 1
+
 					
+		
+		if population_of_top_row > 0:
+			# If we've added any cells to the top row, keep growing!
+			current_actual_height = current_actual_height + 1
+		else:
+			# If our growth rule has stopped adding rows, exit the growth cycle!
+			get_node("/root/Board").layers_to_grow = 0
+			current_actual_height = current_actual_height
 		current_max_height = current_max_height + 1
 	else:
-		# To make decay look (a little natural), we run it top (current max height) to bottom instead of bottom to top. We also limit the number of rows
+		for k in range(-35, 145):
+			if get_cell(k, current_actual_height) == 0:
+				population_of_top_row = population_of_top_row + 1
+		
+		# To make decay look (a little natural), we run it top (current actual height) to bottom instead of bottom to top. We also limit the number of rows
 		# hit by decay based on the growth_decay score of the played card.
 		
 		# Even though we run bottom to top we are still looking at the row below to determine whether to decay.
-		var rows_to_decay = range(current_max_height+(2*(growth_decay-1)), current_max_height)
+		var rows_to_decay = range(current_actual_height+(2*(growth_decay-1)), current_actual_height)
 		# Invert returns void, so we don't set an array based on it, it just inverts rows_to_decay in place.
 		rows_to_decay.invert()
 		for j in rows_to_decay:
+			
+			var cells_killed_this_pass = 0
+			
 			for i in range(-35,145):
-				if should_turn_this_cell_off(i, j, current_max_height, growth_decay, wonder_tradition, order_chaos):
-					# Note: We might not want this long term, it is here now because the (placeholder) decay rule
-					# will always decay the bottom row, since the "bottom" row is on top of an all off row. 
-					match order_chaos:
+				var new_wonder_tradition = wonder_tradition
+				match order_chaos:
 						-3:
 							chance = 10
 						-2:
@@ -77,28 +104,40 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 							chance = 100
 						3:
 							chance = 100
+				
+				# Again, like in growth cycles, CHAOS now has a chance of randomizing wonder_tradition (which rule gets followed)
+				if (randi() % 100) < chance:
+					new_wonder_tradition = wonder_tradition
+					chanceCount = 1 + chanceCount
+				else:
+					new_wonder_tradition = round(rand_range(-3, 3))
+				passCount = passCount + 1
+				
+				if should_turn_this_cell_off(i, j, current_actual_height+1, growth_decay, new_wonder_tradition, order_chaos):
+
+					self.set_cell(i, j, -1)
+					cells_killed_this_pass = cells_killed_this_pass + 1
+					# if we kill a cell in the top row, keep track of how many are left
+					if j == current_actual_height-1:
+						population_of_top_row = population_of_top_row - 1
 						
-					if (randi() % 100) < chance:
-						self.set_cell(i, j, -1)
-						chanceCount = 1 + chanceCount
-					else:
-						self.set_cell(i, j, 0)
-					passCount = passCount + 1
+			if cells_killed_this_pass == 0:
+				rows_to_decay = range(j, j)			
+					
 		rows_to_decay.invert()
 		for j in rows_to_decay:
 			for i in range(-35,145):
 				if kill_lone_cells(i, j):
 					self.set_cell(i, j, -1)
-	
-	if passCount > 0 and chanceCount > 0:
-		chancePercentage = 100 * (chanceCount/passCount)	
-		print ("Chance happened ", chanceCount, " times out of ", passCount, " or " ,chancePercentage,"%")
-	else:
-		print ("No Chance happend that pass")			
-				
-					
+		
+		# actual_height variable decreases if the entire top row is killed
+		if population_of_top_row == 0:
+			current_actual_height = current_actual_height - 1	
+		
+		
+	#keeps track of total cells alive, ends game if 0
 	cellCount = 0
-	for j in range(0, current_max_height):
+	for j in range(0, current_actual_height):
 			for i in range(-35,145):
 				var thisCell = get_cell(i, j)
 				if thisCell == 0:
@@ -108,33 +147,40 @@ func growth(growth_decay, wonder_tradition, order_chaos):
 	if cellCount <= 0:
 		gameOver()
 
-
-
-# This is a placeholder CA function.
-# Two major things we want to change:
-# 1) Right now rules are static (000->0, 011->0, 111->0). Ideally we want to replace this with dyanm
 func should_turn_this_cell_on(i, j, max_height, grow_decay, wonder_tradition, order_chaos):
 	
 	var on = false
 	# This is a little unconventional, CA convention is to use 0 as off and 1 as on, but godot uses -1 as off for a tilemap,
 	# so 0 is the first kind of tile in the tilemap.
 	
-	# c00 c10 c20
-	# c01 c11 c21
-	# c02 c12 c22
+	# cell positions:
+		# c00 c10 c20
+		# c01 c11 c21
+		# c02 c12 c22
+	var c02 = self.get_cell(i-1, j-1)==0
+	var c12 = self.get_cell(i, j-1)==0
+	var c22 = self.get_cell(i+1, j-1)==0
+	var c00 = self.get_cell(i-1, j+1)==0
+	var c10 = self.get_cell(i, j+1)==0
+	var c20 = self.get_cell(i+1, j+1)==0
+	var c01 = self.get_cell(i-1, j)==0
+	var c21 = self.get_cell(i+1, j)==0
+
 	match wonder_tradition:
 		-3:
-			on = rule_6(i, j)
+			on = rule_6(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		-2:
-			on = rule_5(i, j)
+			on = rule_5(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		-1:
-			on = rule_4(i, j)
+			on = rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+		0:
+			on = rule_0(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		1:
-			on = rule_3(i, j)
+			on = rule_3(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		2:
-			on = rule_2(i, j)
+			on = rule_2(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		3:
-			on = rule_1(i, j)
+			on = rule_1(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 			
 	return on
 	
@@ -143,6 +189,10 @@ func should_turn_this_cell_on(i, j, max_height, grow_decay, wonder_tradition, or
 func should_turn_this_cell_off(i, j, max_height, grow_decay, wonder_tradition, order_chaos):
 
 	var off = false
+	# cell positions:
+		# c02 c12 c22	
+		# c01 c11 c21
+		# c00 c10 c20
 	
 	var c02 = self.get_cell(i-1, j-1)==0
 	var c12 = self.get_cell(i, j-1)==0
@@ -153,24 +203,22 @@ func should_turn_this_cell_off(i, j, max_height, grow_decay, wonder_tradition, o
 	var c01 = self.get_cell(i-1, j)==0
 	var c21 = self.get_cell(i+1, j)==0
 	
-	
-	
 	match wonder_tradition:
 		-3:
-			off = rule_6(i, j)
+			off = rule_6(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		-2:
-			off = rule_5(i, j)
+			off = rule_5(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		-1:
-			off = rule_4(i, j)
+			off = rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+		0:
+			off = rule_0(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		1:
-			off = rule_3(i, j)
+			off = rule_3(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		2:
-			off = rule_2(i, j)
+			off = rule_2(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		3:
-			off = rule_1(i, j)
+			off = rule_1(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		
-	if not c02 and not c12 and not c22 and not c00 and not c10 and not c20 and not c01 and not c21:
-		off = true
 		
 	return off
 
@@ -190,69 +238,54 @@ func kill_lone_cells(i, j): #this should run after the decay cycle to take care 
 		off = true
 		
 	return off
+	
+func rule_0(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
+	
+	#some nice symmetrical pyramids (this rule only gets called sometimes during chaos
 
-func rule_1(i, j):
-	
-	#BUILDS A LOT! tendency to totally fill in (class 1)
-	
-	# c00 c10 c20
-	# c01 c11 c21
-	# c02 c12 c22
-	var c02 = self.get_cell(i-1, j-1)==0
-	var c12 = self.get_cell(i, j-1)==0
-	var c22 = self.get_cell(i+1, j-1)==0
-	var c00 = self.get_cell(i-1, j+1)==0
-	var c10 = self.get_cell(i, j+1)==0
-	var c20 = self.get_cell(i+1, j+1)==0
-	var c01 = self.get_cell(i-1, j)==0
-	var c21 = self.get_cell(i+1, j)==0
 	var on = true
-	if not c02 and not c12 and not c22:
+	
+	if c02 and c12 and not c22:
+		on = false
+	elif c02 and not c12 and c22:
+		on = false
+	elif c02 and not c12 and not c22:
+		on = false
+	elif not c02 and c12 and c22:
+		on = false
+	elif not c02 and c12 and not c22:
 		on = false
 		
 	return on
 
-func rule_2(i, j):
+func rule_1(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	
-	#BUILDS STRAIGHT UP (class 2)
-	
-	# c00 c10 c20
-	# c01 c11 c21
-	# c02 c12 c22
-	
-	var c02 = self.get_cell(i-1, j-1)==0
-	var c12 = self.get_cell(i, j-1)==0
-	var c22 = self.get_cell(i+1, j-1)==0
-	var c00 = self.get_cell(i-1, j+1)==0
-	var c10 = self.get_cell(i, j+1)==0
-	var c20 = self.get_cell(i+1, j+1)==0
-	var c01 = self.get_cell(i-1, j)==0
-	var c21 = self.get_cell(i+1, j)==0
+	#BUILDS A LOT!
 	
 	var on = true
-
 	if not c12:
 		on = false
 	
 		
 	return on
 
-func rule_3(i, j):
+func rule_2(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
+	
+	#CA rule 28, builds diagonally
+	
+	
+	var on = false
+
+	if not c02 and (c12 or c22):
+		on = true
+	
+		
+	return on
+
+func rule_3(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	
 	#BUILDS SOME NICE DIAGONALS (class 2)
-	
-	# c00 c10 c20
-	# c01 c11 c21
-	# c02 c12 c22
-	
-	var c02 = self.get_cell(i-1, j-1)==0
-	var c12 = self.get_cell(i, j-1)==0
-	var c22 = self.get_cell(i+1, j-1)==0
-	var c00 = self.get_cell(i-1, j+1)==0
-	var c10 = self.get_cell(i, j+1)==0
-	var c20 = self.get_cell(i+1, j+1)==0
-	var c01 = self.get_cell(i-1, j)==0
-	var c21 = self.get_cell(i+1, j)==0
+
 	
 	var on = true
 
@@ -268,22 +301,10 @@ func rule_3(i, j):
 		
 	return on
 
-func rule_4(i, j):
+func rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	
 	#THIS ONE MAKES PYRAMID-LIKE THINGS (class 3)
-	
-	# c00 c10 c20
-	# c01 c11 c21
-	# c02 c12 c22
-	
-	var c02 = self.get_cell(i-1, j-1)==0
-	var c12 = self.get_cell(i, j-1)==0
-	var c22 = self.get_cell(i+1, j-1)==0
-	var c00 = self.get_cell(i-1, j+1)==0
-	var c10 = self.get_cell(i, j+1)==0
-	var c20 = self.get_cell(i+1, j+1)==0
-	var c01 = self.get_cell(i-1, j)==0
-	var c21 = self.get_cell(i+1, j)==0
+
 	
 	var on = true
 
@@ -298,22 +319,9 @@ func rule_4(i, j):
 	return on
 	
 
-func rule_5(i, j):
+func rule_5(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	
 	#THIS ONE MAKES COOL RANDOM-ISH TRIANGLE-Y STUFF (RULE 30, class 3)
-	
-	# c00 c10 c20
-	# c01 c11 c21
-	# c02 c12 c22
-	
-	var c02 = self.get_cell(i-1, j-1)==0
-	var c12 = self.get_cell(i, j-1)==0
-	var c22 = self.get_cell(i+1, j-1)==0
-	var c00 = self.get_cell(i-1, j+1)==0
-	var c10 = self.get_cell(i, j+1)==0
-	var c20 = self.get_cell(i+1, j+1)==0
-	var c01 = self.get_cell(i-1, j)==0
-	var c21 = self.get_cell(i+1, j)==0
 	
 	
 	var on = true
@@ -329,22 +337,10 @@ func rule_5(i, j):
 		
 	return on
 
-func rule_6(i, j):
+func rule_6(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	
 	#SERPINSKI! (rule 90, class 4)
-	
-	# c00 c10 c20
-	# c01 c11 c21
-	# c02 c12 c22
-	
-	var c02 = self.get_cell(i-1, j-1)==0
-	var c12 = self.get_cell(i, j-1)==0
-	var c22 = self.get_cell(i+1, j-1)==0
-	var c00 = self.get_cell(i-1, j+1)==0
-	var c10 = self.get_cell(i, j+1)==0
-	var c20 = self.get_cell(i+1, j+1)==0
-	var c01 = self.get_cell(i-1, j)==0
-	var c21 = self.get_cell(i+1, j)==0
+
 	
 	var on = true
 
@@ -357,6 +353,8 @@ func rule_6(i, j):
 	if not c02 and not c12 and not c22:
 		on = false
 	return on
+	
+
 
 func gameOver():
 	get_tree().change_scene("res://EndScreen.tscn")
