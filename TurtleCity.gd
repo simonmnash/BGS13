@@ -238,6 +238,39 @@ func kill_lone_cells(i, j): #this should run after the decay cycle to take care 
 		off = true
 		
 	return off
+
+# Generic function to apply an elementary cellular automota rule.
+# Accepts two integer coordinates (i, j), and an boolean array of length 8.
+# Returns a boolean of whether to turn on cell i, j.
+# Uses the binary rule format described on http://mathworld.wolfram.com/topics/CellularAutomata.html
+func run_elementary_ca_rule(i, j, rule):
+	var c0 = self.get_cell(i-1, j+1)==0
+	var c1 = self.get_cell(i, j+1)==0
+	var c2 = self.get_cell(i+1, j+1)==0
+	
+	if c0 and c1 and c2:
+		return rule[0]
+	elif c0 and c1 and not c2:
+		return rule[1]
+	elif c0 and not c1 and c2:
+		return rule[2]
+	elif c0 and not c1 and not c2:
+		return rule[3]
+	elif not c0 and c1 and c2:
+		return rule[4]
+	elif not c0 and c1 and not c2:
+		return rule[5]
+	elif not c0 and not c1 and c2:
+		return rule[6]
+	elif not c0 and not c1 and not c2:
+		return rule[7]
+
+
+# Example function that uses run_elemntary_ca_rule.
+# Picks a random rule in the binary format used on
+func totally_random_rule(i, j):
+	var random_rule = [bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2)]
+	return run_elementary_ca_rule(i, j, random_rule)
 	
 func rule_0(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	
@@ -269,24 +302,16 @@ func rule_1(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 		
 	return on
 
-func rule_2(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
-	
+func rule_2(i, j):
 	#CA rule 28, builds diagonally
-	
-	
-	var on = false
+	var rule_28 = [false, false, false, true, true, true, false, false]
+	return run_elementary_ca_rule(i, j, rule_28)
 
-	if not c02 and (c12 or c22):
-		on = true
-	
-		
-	return on
 
 func rule_3(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	
 	#BUILDS SOME NICE DIAGONALS (class 2)
 
-	
 	var on = true
 
 	if c02 and c12 and not c22:
@@ -302,10 +327,8 @@ func rule_3(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	return on
 
 func rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
-	
 	#THIS ONE MAKES PYRAMID-LIKE THINGS (class 3)
 
-	
 	var on = true
 
 	if not c02 and not c22:
@@ -319,41 +342,15 @@ func rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 	return on
 	
 
-func rule_5(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
-	
+func rule_5(i, j):
 	#THIS ONE MAKES COOL RANDOM-ISH TRIANGLE-Y STUFF (RULE 30, class 3)
-	
-	
-	var on = true
+	rule_30 = [false, false, false, true, true, true, true, false]
+	return run_elementary_ca_rule(i, j, rule_30)
 
-	if c02 and c12 and c22:
-		on = false
-	elif c02 and c12 and not c22:
-		on = false
-	elif c02 and c22 and not c12:
-		on = false
-	elif not c02 and not c22 and not c12:
-		on = false
-		
-	return on
-
-func rule_6(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
-	
+func rule_6(i, j):
 	#SERPINSKI! (rule 90, class 4)
-
-	
-	var on = true
-
-	if c02 and c12 and c22:
-		on = false
-	elif c02 and not c12 and c22:
-		on = false
-	if not c02 and c12 and not c22:
-		on = false
-	if not c02 and not c12 and not c22:
-		on = false
-	return on
-	
+	rule_90 = [false, true, false, true, true, false,true, false]
+	return run_elementary_ca_rule(i, j, rule_90)
 
 
 func gameOver():
