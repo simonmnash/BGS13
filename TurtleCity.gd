@@ -168,9 +168,9 @@ func should_turn_this_cell_on(i, j, max_height, grow_decay, wonder_tradition, or
 
 	match wonder_tradition:
 		-3:
-			on = rule_6(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+			on = rule_6(i, j)
 		-2:
-			on = rule_5(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+			on = rule_5(i, j)
 		-1:
 			on = rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		0:
@@ -178,7 +178,7 @@ func should_turn_this_cell_on(i, j, max_height, grow_decay, wonder_tradition, or
 		1:
 			on = rule_3(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		2:
-			on = rule_2(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+			on = rule_2(i, j)
 		3:
 			on = rule_1(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 			
@@ -205,9 +205,9 @@ func should_turn_this_cell_off(i, j, max_height, grow_decay, wonder_tradition, o
 	
 	match wonder_tradition:
 		-3:
-			off = rule_6(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+			off = rule_6(i, j)
 		-2:
-			off = rule_5(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+			off = rule_5(i, j)
 		-1:
 			off = rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		0:
@@ -215,7 +215,7 @@ func should_turn_this_cell_off(i, j, max_height, grow_decay, wonder_tradition, o
 		1:
 			off = rule_3(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		2:
-			off = rule_2(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
+			off = rule_2(i, j)
 		3:
 			off = rule_1(i, j, c00, c10, c20, c02, c12, c22, c01, c21)
 		
@@ -244,9 +244,9 @@ func kill_lone_cells(i, j): #this should run after the decay cycle to take care 
 # Returns a boolean of whether to turn on cell i, j.
 # Uses the binary rule format described on http://mathworld.wolfram.com/topics/CellularAutomata.html
 func run_elementary_ca_rule(i, j, rule):
-	var c0 = self.get_cell(i-1, j+1)==0
-	var c1 = self.get_cell(i, j+1)==0
-	var c2 = self.get_cell(i+1, j+1)==0
+	var c0 = self.get_cell(i-1, j-1)==0
+	var c1 = self.get_cell(i, j-1)==0
+	var c2 = self.get_cell(i+1, j-1)==0
 	
 	if c0 and c1 and c2:
 		return rule[0]
@@ -267,7 +267,7 @@ func run_elementary_ca_rule(i, j, rule):
 
 
 # Example function that uses run_elemntary_ca_rule.
-# Picks a random rule in the binary format used on
+# Picks a random rule in a boolean array format and applies it.
 func totally_random_rule(i, j):
 	var random_rule = [bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2), bool(randi() % 2)]
 	return run_elementary_ca_rule(i, j, random_rule)
@@ -344,12 +344,12 @@ func rule_4(i, j, c00, c10, c20, c02, c12, c22, c01, c21):
 
 func rule_5(i, j):
 	#THIS ONE MAKES COOL RANDOM-ISH TRIANGLE-Y STUFF (RULE 30, class 3)
-	rule_30 = [false, false, false, true, true, true, true, false]
+	var rule_30 = [false, false, false, true, true, true, true, false]
 	return run_elementary_ca_rule(i, j, rule_30)
 
 func rule_6(i, j):
 	#SERPINSKI! (rule 90, class 4)
-	rule_90 = [false, true, false, true, true, false,true, false]
+	var rule_90 = [false, true, false, true, true, false,true, false]
 	return run_elementary_ca_rule(i, j, rule_90)
 
 
